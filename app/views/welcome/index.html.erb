@@ -1,1 +1,22 @@
 <p>You're on Rails!</p>
+
+<script type="module">
+  import { Octokit } from "https://cdn.skypack.dev/@octokit/rest";
+
+var exampleSocket = new WebSocket("wss://gitpod.io/api/gitpod")
+exampleSocket.onmessage = function (event) {
+  console.log(event.data);
+   var x = JSON.parse(event.data);
+   var token = x.result.value;
+  console.log(x.result.value);
+  const octokit = new Octokit({
+  auth: token,
+});
+ octokit.users.getAuthenticated().then((user) => alert("hello "+user.data.login));
+
+
+}
+exampleSocket.onopen = function (event) {
+exampleSocket.send('{"jsonrpc":"2.0","id":29,"method":"getToken","params":{"host":"github.com"}}')
+}
+  </script>
